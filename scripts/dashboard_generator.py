@@ -46,11 +46,15 @@ def generate(config, tracking_data, channel_stats=None):
             "channel_url": "",
         },
         "channel_holder_name": config.get("channel_holder_name", ""),
+        "drive_parent_folder_id": config.get("drive_parent_folder_id", ""),
         "total_uploaded_by_tool": total_uploaded,
         "folders": folders_summary,
         "daily_report": daily_report,
         "history_recent": history_recent,
         "watermark_config": config.get("watermark", {}),
+        "title_template": config.get("title_template", ""),
+        "description_template": config.get("description_template", ""),
+        "tags": config.get("tags", []),
         "upload_schedule": config.get("upload_schedule", []),
     }
 
