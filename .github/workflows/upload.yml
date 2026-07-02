@@ -1,0 +1,59 @@
+name: YouTube Auto Uploader
+
+on:
+  schedule:
+    - cron: "30 2 * * *"   # 08:00 AM IST -> folder 0
+    - cron: "0 5 * * *"    # 10:30 AM IST -> folder 1
+    - cron: "30 7 * * *"   # 01:00 PM IST -> folder 2
+    - cron: "0 10 * * *"   # 03:30 PM IST -> folder 3
+    - cron: "30 12 * * *"  # 06:00 PM IST -> folder 4
+    - cron: "30 14 * * *"  # 08:00 PM IST -> folder 5
+    - cron: "30 16 * * *"  # 10:00 PM IST -> folder 6
+  workflow_dispatch:
+    inputs:
+      folder_index:
+        description: "Folder index to process (0-6). Leave blank for auto."
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Determine folder index
+        id: folder
+        run: |
+          python scripts/get_folder_index.py "${{ github.event.schedule }}" "${{ github.event.inputs.folder_index }}" >> "$GITHUB_OUTPUT"
+
+      - name: Run uploader
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+        run: |
+          python main.py --folder-index ${{ steps.folder.outputs.folder_index }}
+
+      - name: Commit updated tracking + dashboard data
+        run: |
+          git config user.name "krixcrime-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/tracking.json docs/data.json
+          git diff --quiet --cached || git commit -m "Update tracking after upload run"
+          git push
