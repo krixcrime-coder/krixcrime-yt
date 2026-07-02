@@ -1,0 +1,29 @@
+{
+  "channel": {
+    "title": "Not fetched yet",
+    "logo": "",
+    "subscribers": "N/A",
+    "total_videos": "N/A",
+    "channel_url": ""
+  },
+  "channel_holder_name": "KrixCrime",
+  "total_uploaded_by_tool": 0,
+  "folders": [],
+  "daily_report": [],
+  "history_recent": [],
+  "watermark_config": {
+    "circle_position": "top_left",
+    "circle_width": 150,
+    "circle_margin": 20,
+    "rect_enabled": false
+  },
+  "upload_schedule": [
+    { "folder_index": 0, "time_ist": "08:00 AM" },
+    { "folder_index": 1, "time_ist": "10:30 AM" },
+    { "folder_index": 2, "time_ist": "01:00 PM" },
+    { "folder_index": 3, "time_ist": "03:30 PM" },
+    { "folder_index": 4, "time_ist": "06:00 PM" },
+    { "folder_index": 5, "time_ist": "08:00 PM" },
+    { "folder_index": 6, "time_ist": "10:00 PM" }
+  ]
+}

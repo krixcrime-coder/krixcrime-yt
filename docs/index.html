@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KrixCrime — Upload Dashboard</title>
+<style>
+  :root {
+    --bg: #0b0b0c;
+    --panel: #151516;
+    --line: #2a2a2c;
+    --red: #d31c1c;
+    --red-bright: #ff2e2e;
+    --text: #e8e6e3;
+    --muted: #8a8a8e;
+    --ok: #33c86a;
+    --fail: #ff4d4d;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Courier New', ui-monospace, monospace;
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(211,28,28,0.06), transparent 40%),
+      radial-gradient(circle at 80% 60%, rgba(211,28,28,0.04), transparent 40%);
+  }
+  header {
+    border-bottom: 1px solid var(--line);
+    padding: 28px 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  header img.logo {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 2px solid var(--red);
+    object-fit: cover;
+  }
+  .brand-block { flex: 1; min-width: 220px; }
+  .brand-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: 30px;
+    letter-spacing: 1px;
+    color: var(--text);
+    text-transform: uppercase;
+  }
+  .brand-title span { color: var(--red-bright); }
+  .brand-sub { color: var(--muted); font-size: 13px; margin-top: 2px; }
+  .stat-strip {
+    display: flex;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+  .stat {
+    padding: 6px 20px;
+    border-left: 1px solid var(--line);
+    text-align: center;
+    min-width: 110px;
+  }
+  .stat:first-child { border-left: none; }
+  .stat .num { font-size: 22px; font-weight: bold; color: var(--red-bright); }
+  .stat .lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 24px; }
+  .section-title {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--red-bright);
+    margin: 36px 0 14px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 8px;
+  }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 16px;
+  }
+  .card .title { font-size: 12px; color: var(--muted); text-transform: uppercase; }
+  .card .value { font-size: 15px; margin-top: 6px; }
+  .bar-track { height: 6px; background: var(--line); border-radius: 3px; margin-top: 10px; overflow: hidden; }
+  .bar-fill { height: 100%; background: var(--red); }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 11px; }
+  .badge.done { background: rgba(51,200,106,0.15); color: var(--ok); }
+  .badge.active { background: rgba(211,28,28,0.15); color: var(--red-bright); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); text-transform: uppercase; font-size: 10px; letter-spacing: 1px; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+  .status-success { color: var(--ok); }
+  .status-failed { color: var(--fail); }
+  a { color: var(--red-bright); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .empty { color: var(--muted); padding: 20px; text-align: center; font-style: italic; }
+  footer { text-align: center; color: var(--muted); font-size: 11px; padding: 30px; }
+</style>
+</head>
+<body>
+
+<header>
+  <img class="logo" id="channel-logo" src="" alt="Channel logo">
+  <div class="brand-block">
+    <div class="brand-title">KRIX<span>CRIME</span></div>
+    <div class="brand-sub" id="channel-name">Loading channel...</div>
+    <div class="brand-sub" id="holder-name"></div>
+  </div>
+  <div class="stat-strip">
+    <div class="stat"><div class="num" id="stat-subs">—</div><div class="lbl">Subscribers</div></div>
+    <div class="stat"><div class="num" id="stat-total">—</div><div class="lbl">Total Videos</div></div>
+    <div class="stat"><div class="num" id="stat-tool">—</div><div class="lbl">Uploaded by Tool</div></div>
+  </div>
+</header>
+
+<main>
+  <div class="section-title">Folder Progress</div>
+  <div class="grid" id="folders-grid"></div>
+
+  <div class="section-title">Daily Report</div>
+  <div class="card">
+    <table id="daily-table">
+      <thead><tr><th>Date</th><th>Uploaded</th><th>Errors</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <div class="empty" id="daily-empty" style="display:none;">No uploads recorded yet.</div>
+  </div>
+
+  <div class="section-title">Watermark Configuration</div>
+  <div class="grid" id="watermark-grid"></div>
+
+  <div class="section-title">Upload Schedule</div>
+  <div class="card">
+    <table>
+      <thead><tr><th>Folder #</th><th>Time (IST)</th></tr></thead>
+      <tbody id="schedule-body"></tbody>
+    </table>
+  </div>
+
+  <div class="section-title">Recent History &amp; Errors</div>
+  <div class="card">
+    <table>
+      <thead><tr><th>Date</th><th>Folder</th><th>Video</th><th>Status</th><th>Link / Error</th></tr></thead>
+      <tbody id="history-body"></tbody>
+    </table>
+    <div class="empty" id="history-empty" style="display:none;">No history yet — the first scheduled run will populate this.</div>
+  </div>
+</main>
+
+<footer>KrixCrime Auto-Uploader &middot; dashboard regenerates after every scheduled run</footer>
+
+<script>
+async function loadDashboard() {
+  let data;
+  try {
+    const res = await fetch('data.json', { cache: 'no-store' });
+    data = await res.json();
+  } catch (e) {
+    document.querySelector('main').innerHTML = '<div class="empty">No data yet. Run the workflow at least once.</div>';
+    return;
+  }
+
+  const ch = data.channel || {};
+  document.getElementById('channel-logo').src = ch.logo || '';
+  document.getElementById('channel-name').textContent = ch.title || 'Channel not yet fetched';
+  document.getElementById('holder-name').textContent = data.channel_holder_name ? 'Managed by ' + data.channel_holder_name : '';
+  document.getElementById('stat-subs').textContent = ch.subscribers ?? '—';
+  document.getElementById('stat-total').textContent = ch.total_videos ?? '—';
+  document.getElementById('stat-tool').textContent = data.total_uploaded_by_tool ?? 0;
+
+  // Folders
+  const foldersGrid = document.getElementById('folders-grid');
+  foldersGrid.innerHTML = '';
+  (data.folders || []).forEach(f => {
+    const pct = f.next_position ? Math.min(100, Math.round((f.uploaded_count / (f.uploaded_count + 1)) * 0)) : 0;
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `
+      <div class="title">Folder ${f.folder_index}</div>
+      <div class="value">${f.folder_name}</div>
+      <div style="margin-top:8px;">${f.completed ? '<span class="badge done">COMPLETED</span>' : '<span class="badge active">IN PROGRESS</span>'}</div>
+      <div style="margin-top:8px; font-size:12px; color:var(--muted);">${f.uploaded_count} uploaded</div>
+    `;
+    foldersGrid.appendChild(div);
+  });
+
+  // Daily report
+  const dailyBody = document.querySelector('#daily-table tbody');
+  dailyBody.innerHTML = '';
+  const daily = data.daily_report || [];
+  document.getElementById('daily-empty').style.display = daily.length ? 'none' : 'block';
+  daily.forEach(d => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${d.date}</td><td class="status-success">${d.success}</td><td class="status-failed">${d.failed}</td>`;
+    dailyBody.appendChild(tr);
+  });
+
+  // Watermark config
+  const wm = data.watermark_config || {};
+  const wmGrid = document.getElementById('watermark-grid');
+  wmGrid.innerHTML = `
+    <div class="card"><div class="title">Circle Logo</div><div class="value">${wm.circle_position || '—'}, width ${wm.circle_width || '—'}px, margin ${wm.circle_margin || '—'}px</div></div>
+    <div class="card"><div class="title">Rect Logo</div><div class="value">${wm.rect_enabled ? (wm.rect_position + ', width ' + wm.rect_width + 'px') : 'Disabled'}</div></div>
+    <div class="card"><div class="title">Outro Clip</div><div class="value">Appended to every upload (2s)</div></div>
+  `;
+
+  // Schedule
+  const schedBody = document.getElementById('schedule-body');
+  schedBody.innerHTML = '';
+  (data.upload_schedule || []).forEach(s => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${s.folder_index}</td><td>${s.time_ist}</td>`;
+    schedBody.appendChild(tr);
+  });
+
+  // History
+  const histBody = document.getElementById('history-body');
+  histBody.innerHTML = '';
+  const hist = data.history_recent || [];
+  document.getElementById('history-empty').style.display = hist.length ? 'none' : 'block';
+  hist.forEach(h => {
+    const tr = document.createElement('tr');
+    const statusClass = h.status === 'success' ? 'status-success' : 'status-failed';
+    const linkOrError = h.status === 'success'
+      ? `<a href="${h.youtube_link}" target="_blank">View</a>`
+      : (h.error || '');
+    tr.innerHTML = `<td>${h.date}</td><td>${h.folder_index}</td><td>${h.video_name}</td><td class="${statusClass}">${h.status}</td><td>${linkOrError}</td>`;
+    histBody.appendChild(tr);
+  });
+}
+
+loadDashboard();
+</script>
+
+</body>
+</html>
