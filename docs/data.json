@@ -1,6 +1,6 @@
 {
   "channel": {
-    "title": "Not fetched yet",
+    "title": "KrixCrime",
     "logo": "",
     "subscribers": "N/A",
     "total_videos": "N/A",
@@ -8,29 +8,131 @@
   },
   "channel_holder_name": "KrixCrime",
   "drive_parent_folder_id": "1vAkSCfTcXPen5pDkwMgUmbAOqGQZxfwF",
-  "total_uploaded_by_tool": 0,
-  "folders": [],
-  "daily_report": [],
-  "history_recent": [],
+  "total_uploaded_by_tool": 2,
+  "folders": [
+    {
+      "folder_index": 0,
+      "folder_name": "ERideBay (1-500)",
+      "uploaded_count": 2,
+      "next_position": 2,
+      "completed": false
+    },
+    {
+      "folder_index": 1,
+      "folder_name": "ERideBay (501-1000)",
+      "uploaded_count": 0,
+      "next_position": 0,
+      "completed": false
+    },
+    {
+      "folder_index": 2,
+      "folder_name": "ERideBay (1001-1500)",
+      "uploaded_count": 0,
+      "next_position": 0,
+      "completed": false
+    },
+    {
+      "folder_index": 3,
+      "folder_name": "ERideBay (1501-2000)",
+      "uploaded_count": 0,
+      "next_position": 0,
+      "completed": false
+    },
+    {
+      "folder_index": 4,
+      "folder_name": "ERideBay (2001-2500)",
+      "uploaded_count": 0,
+      "next_position": 0,
+      "completed": false
+    },
+    {
+      "folder_index": 5,
+      "folder_name": "ERideBay (2501-3000)",
+      "uploaded_count": 0,
+      "next_position": 0,
+      "completed": false
+    },
+    {
+      "folder_index": 6,
+      "folder_name": "ERideBay (3001-3160+)",
+      "uploaded_count": 0,
+      "next_position": 0,
+      "completed": false
+    }
+  ],
+  "daily_report": [
+    {
+      "date": "2026-07-02",
+      "success": 2,
+      "failed": 0,
+      "errors": []
+    }
+  ],
+  "history_recent": [
+    {
+      "date": "2026-07-02T21:57:11.163846+00:00",
+      "folder_index": 0,
+      "video_name": "ERideBay (2).mp4",
+      "status": "success",
+      "youtube_link": "https://youtube.com/watch?v=sRcOuK4SVhQ",
+      "error": null
+    },
+    {
+      "date": "2026-07-02T21:23:01.590323+00:00",
+      "folder_index": 0,
+      "video_name": "ERideBay (1).mp4",
+      "status": "success",
+      "youtube_link": "https://youtube.com/watch?v=OlSkMqAVcfU",
+      "error": null
+    }
+  ],
   "watermark_config": {
+    "circle_logo": "assets/logo_circle.png",
     "circle_position": "top_left",
     "circle_width": 150,
     "circle_margin": 20,
-    "rect_enabled": true,
+    "rect_logo": "assets/logo_rect.png",
     "rect_position": "bottom_right",
     "rect_width": 130,
-    "rect_margin": 20
+    "rect_margin": 20,
+    "rect_enabled": true
   },
   "title_template": "Anime Edit #{num} | KrixCrime",
   "description_template": "Follow for daily anime edits!\n\n#anime #edit #shorts #krixcrime",
-  "tags": ["anime", "anime edit", "shorts", "krixcrime"],
+  "tags": [
+    "anime",
+    "anime edit",
+    "shorts",
+    "krixcrime"
+  ],
   "upload_schedule": [
-    { "folder_index": 0, "time_24h": "08:00" },
-    { "folder_index": 1, "time_24h": "10:30" },
-    { "folder_index": 2, "time_24h": "13:00" },
-    { "folder_index": 3, "time_24h": "15:30" },
-    { "folder_index": 4, "time_24h": "18:00" },
-    { "folder_index": 5, "time_24h": "20:00" },
-    { "folder_index": 6, "time_24h": "22:00" }
+    {
+      "folder_index": 0,
+      "time_24h": "08:00"
+    },
+    {
+      "folder_index": 1,
+      "time_24h": "10:30"
+    },
+    {
+      "folder_index": 2,
+      "time_24h": "13:00"
+    },
+    {
+      "folder_index": 3,
+      "time_24h": "15:30"
+    },
+    {
+      "folder_index": 4,
+      "time_24h": "18:00"
+    },
+    {
+      "folder_index": 5,
+      "time_24h": "20:00"
+    },
+    {
+      "folder_index": 6,
+      "time_24h": "22:00"
+    }
   ]
 }
