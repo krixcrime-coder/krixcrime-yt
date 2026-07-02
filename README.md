@@ -41,7 +41,30 @@ OAuth app is still in "Testing" mode). To make it permanent:
 4. Save. Your dashboard will be live at:
    `https://krixcrime-coder.github.io/krixcrime-yt/`
 
-### 4. Test it once manually
+### 5. Set up the Dashboard Control Panel (Settings + Upload Now buttons)
+The dashboard can now edit watermark position/size, title/description/tags,
+and upload times directly, plus trigger an upload for any folder on demand.
+To allow this, the dashboard needs a GitHub token:
+
+1. Go to **github.com/settings/personal-access-tokens/new** (Fine-grained token)
+2. Name it anything (e.g. "krixcrime-dashboard")
+3. Repository access: **Only select repositories** → choose `krixcrime-yt`
+4. Under Permissions, set:
+   - **Contents: Read and write**
+   - **Actions: Read and write**
+5. Generate the token and copy it
+6. Open your dashboard → scroll to **Control Panel** → click **Save Changes**
+   or **Upload Now** the first time — it will ask you to paste this token
+7. It's saved only in that browser's local storage, never committed to the repo
+8. Every save/trigger also asks for your 4-digit code (**5677**) as a
+   safety check against accidental taps — change this in `docs/index.html`
+   (search for `const PIN`) if you want a different code
+
+⚠️ Note: this code is a tap-guard, not real security — anyone with access to
+this same browser/device could bypass it and use the saved token. Don't use
+this dashboard on a shared or public device.
+
+
 1. Go to your repo → **Actions** tab
 2. Click **YouTube Auto Uploader** → **Run workflow**
 3. Leave "folder_index" blank (it'll default to folder 0) or type a number 0-6
