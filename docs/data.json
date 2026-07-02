@@ -8,13 +8,13 @@
   },
   "channel_holder_name": "KrixCrime",
   "drive_parent_folder_id": "1vAkSCfTcXPen5pDkwMgUmbAOqGQZxfwF",
-  "total_uploaded_by_tool": 2,
+  "total_uploaded_by_tool": 3,
   "folders": [
     {
       "folder_index": 0,
       "folder_name": "ERideBay (1-500)",
-      "uploaded_count": 2,
-      "next_position": 2,
+      "uploaded_count": 3,
+      "next_position": 3,
       "completed": false
     },
     {
@@ -63,12 +63,20 @@
   "daily_report": [
     {
       "date": "2026-07-02",
-      "success": 2,
+      "success": 3,
       "failed": 0,
       "errors": []
     }
   ],
   "history_recent": [
+    {
+      "date": "2026-07-02T22:01:43.113096+00:00",
+      "folder_index": 0,
+      "video_name": "ERideBay (3).mp4",
+      "status": "success",
+      "youtube_link": "https://youtube.com/watch?v=PvOpFMteNhg",
+      "error": null
+    },
     {
       "date": "2026-07-02T21:57:11.163846+00:00",
       "folder_index": 0,
