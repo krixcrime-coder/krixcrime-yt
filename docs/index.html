@@ -53,42 +53,23 @@
   }
   .brand-title span { color: var(--red-bright); }
   .brand-sub { color: var(--muted); font-size: 13px; margin-top: 2px; }
-  .stat-strip {
-    display: flex;
-    gap: 0;
-    flex-wrap: wrap;
-  }
-  .stat {
-    padding: 6px 20px;
-    border-left: 1px solid var(--line);
-    text-align: center;
-    min-width: 110px;
-  }
+  .stat-strip { display: flex; gap: 0; flex-wrap: wrap; }
+  .stat { padding: 6px 20px; border-left: 1px solid var(--line); text-align: center; min-width: 110px; }
   .stat:first-child { border-left: none; }
   .stat .num { font-size: 22px; font-weight: bold; color: var(--red-bright); }
   .stat .lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
 
   main { max-width: 1100px; margin: 0 auto; padding: 24px; }
   .section-title {
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--red-bright);
-    margin: 36px 0 14px;
-    border-bottom: 1px solid var(--line);
-    padding-bottom: 8px;
+    font-size: 13px; text-transform: uppercase; letter-spacing: 2px;
+    color: var(--red-bright); margin: 36px 0 14px;
+    border-bottom: 1px solid var(--line); padding-bottom: 8px;
+    display: flex; justify-content: space-between; align-items: center;
   }
   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
-  .card {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    padding: 16px;
-  }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 16px; }
   .card .title { font-size: 12px; color: var(--muted); text-transform: uppercase; }
   .card .value { font-size: 15px; margin-top: 6px; }
-  .bar-track { height: 6px; background: var(--line); border-radius: 3px; margin-top: 10px; overflow: hidden; }
-  .bar-fill { height: 100%; background: var(--red); }
   .badge { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 11px; }
   .badge.done { background: rgba(51,200,106,0.15); color: var(--ok); }
   .badge.active { background: rgba(211,28,28,0.15); color: var(--red-bright); }
@@ -101,9 +82,30 @@
   .status-failed { color: var(--fail); }
   a { color: var(--red-bright); text-decoration: none; }
   a:hover { text-decoration: underline; }
-
   .empty { color: var(--muted); padding: 20px; text-align: center; font-style: italic; }
   footer { text-align: center; color: var(--muted); font-size: 11px; padding: 30px; }
+
+  button {
+    background: var(--red); color: #fff; border: none; border-radius: 4px;
+    padding: 8px 14px; font-family: inherit; font-size: 12px; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  button:hover { background: var(--red-bright); }
+  button.small { padding: 5px 10px; font-size: 11px; margin-top: 10px; }
+  button.secondary { background: transparent; border: 1px solid var(--line); color: var(--text); }
+
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .field input, .field select, .field textarea {
+    background: #0f0f10; border: 1px solid var(--line); color: var(--text);
+    padding: 8px 10px; border-radius: 4px; font-family: inherit; font-size: 13px;
+  }
+  .field textarea { resize: vertical; min-height: 60px; }
+  .schedule-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .schedule-row .folder-label { width: 90px; font-size: 12px; color: var(--muted); }
+  .note { font-size: 11px; color: var(--muted); margin-top: 14px; line-height: 1.5; }
+  .save-bar { margin-top: 20px; display: flex; gap: 10px; }
 </style>
 </head>
 <body>
@@ -135,17 +137,6 @@
     <div class="empty" id="daily-empty" style="display:none;">No uploads recorded yet.</div>
   </div>
 
-  <div class="section-title">Watermark Configuration</div>
-  <div class="grid" id="watermark-grid"></div>
-
-  <div class="section-title">Upload Schedule</div>
-  <div class="card">
-    <table>
-      <thead><tr><th>Folder #</th><th>Time (IST)</th></tr></thead>
-      <tbody id="schedule-body"></tbody>
-    </table>
-  </div>
-
   <div class="section-title">Recent History &amp; Errors</div>
   <div class="card">
     <table>
@@ -154,11 +145,342 @@
     </table>
     <div class="empty" id="history-empty" style="display:none;">No history yet — the first scheduled run will populate this.</div>
   </div>
+
+  <div class="section-title">Control Panel — Settings</div>
+  <div class="card">
+    <div class="form-grid">
+      <div class="field">
+        <label>Circle Logo Position</label>
+        <select id="circle_position">
+          <option value="top_left">Top Left</option>
+          <option value="top_right">Top Right</option>
+          <option value="bottom_left">Bottom Left</option>
+          <option value="bottom_right">Bottom Right</option>
+          <option value="center">Center</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Circle Logo Width (px)</label>
+        <input type="number" id="circle_width" min="30" max="600">
+      </div>
+      <div class="field">
+        <label>Circle Logo Margin (px)</label>
+        <input type="number" id="circle_margin" min="0" max="200">
+      </div>
+
+      <div class="field">
+        <label>Rectangle Logo Enabled</label>
+        <select id="rect_enabled">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Rectangle Logo Position</label>
+        <select id="rect_position">
+          <option value="top_left">Top Left</option>
+          <option value="top_right">Top Right</option>
+          <option value="bottom_left">Bottom Left</option>
+          <option value="bottom_right">Bottom Right</option>
+          <option value="center">Center</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Rectangle Logo Width (px)</label>
+        <input type="number" id="rect_width" min="30" max="600">
+      </div>
+      <div class="field">
+        <label>Rectangle Logo Margin (px)</label>
+        <input type="number" id="rect_margin" min="0" max="200">
+      </div>
+
+      <div class="field">
+        <label>Title Template (use {num} for video number)</label>
+        <input type="text" id="title_template">
+      </div>
+      <div class="field">
+        <label>Tags (comma separated)</label>
+        <input type="text" id="tags">
+      </div>
+      <div class="field" style="grid-column: 1 / -1;">
+        <label>Description Template</label>
+        <textarea id="description_template"></textarea>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-top:28px; font-size:11px;">Daily Upload Times (IST)</div>
+    <div id="schedule-editor"></div>
+
+    <div class="save-bar">
+      <button onclick="saveSettings()">Save Changes (requires code)</button>
+      <button class="secondary" onclick="clearToken()">Forget saved GitHub token</button>
+    </div>
+    <div class="note">
+      Saving here commits directly to your GitHub repo (config.json + the workflow schedule).
+      The first time you save or trigger an upload, you'll be asked to paste a GitHub token —
+      it's stored only in this browser's local storage, never written into the repo itself.
+      Every save/trigger also asks for your 4-digit code to avoid accidental taps.
+    </div>
+  </div>
 </main>
 
 <footer>KrixCrime Auto-Uploader &middot; dashboard regenerates after every scheduled run</footer>
 
 <script>
+const OWNER = "krixcrime-coder";
+const REPO = "krixcrime-yt";
+const API = `https://api.github.com/repos/${OWNER}/${REPO}`;
+const PIN = "5677";
+let currentData = null;
+
+function checkPin() {
+  const entered = prompt("Enter your 4-digit code to continue:");
+  if (entered === null) return false;
+  if (entered.trim() !== PIN) { alert("Wrong code. Action cancelled."); return false; }
+  return true;
+}
+
+function getToken() {
+  let t = localStorage.getItem("gh_pat");
+  if (!t) {
+    t = prompt("Paste your GitHub token (saved only in this browser, never in the repo):");
+    if (t) { t = t.trim(); localStorage.setItem("gh_pat", t); }
+  }
+  return t;
+}
+
+function clearToken() {
+  localStorage.removeItem("gh_pat");
+  alert("Saved token removed from this browser.");
+}
+
+function b64Encode(str) {
+  return btoa(unescape(encodeURIComponent(str)));
+}
+
+async function ghGetFile(path) {
+  const token = getToken();
+  const res = await fetch(`${API}/contents/${path}`, {
+    headers: { Authorization: `token ${token}`, Accept: "application/vnd.github+json" }
+  });
+  if (!res.ok) throw new Error(`Reading ${path} failed (${res.status}). Check your token has repo access.`);
+  return res.json();
+}
+
+async function ghPutFile(path, content, message) {
+  let sha;
+  try { sha = (await ghGetFile(path)).sha; } catch (e) { sha = undefined; }
+  const token = getToken();
+  const res = await fetch(`${API}/contents/${path}`, {
+    method: "PUT",
+    headers: { Authorization: `token ${token}`, Accept: "application/vnd.github+json" },
+    body: JSON.stringify({ message, content: b64Encode(content), sha, branch: "main" })
+  });
+  if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(`Writing ${path} failed (${res.status}): ${errText}`);
+  }
+  return res.json();
+}
+
+async function ghTriggerWorkflow(folderIndex) {
+  const token = getToken();
+  const res = await fetch(`${API}/actions/workflows/upload.yml/dispatches`, {
+    method: "POST",
+    headers: { Authorization: `token ${token}`, Accept: "application/vnd.github+json" },
+    body: JSON.stringify({ ref: "main", inputs: { folder_index: String(folderIndex) } })
+  });
+  if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(`Trigger failed (${res.status}): ${errText}`);
+  }
+  return true;
+}
+
+function istToUtcCron(hhmm) {
+  const [h, m] = hhmm.split(":").map(Number);
+  let total = h * 60 + m - (5 * 60 + 30);
+  if (total < 0) total += 24 * 60;
+  const uh = Math.floor(total / 60);
+  const um = total % 60;
+  return `${um} ${uh} * * *`;
+}
+
+function to12h(hhmm) {
+  const [h, m] = hhmm.split(":").map(Number);
+  const period = h >= 12 ? "PM" : "AM";
+  let hh = h % 12; if (hh === 0) hh = 12;
+  return `${hh}:${String(m).padStart(2, "0")} ${period}`;
+}
+
+async function uploadNow(folderIndex) {
+  if (!checkPin()) return;
+  try {
+    await ghTriggerWorkflow(folderIndex);
+    alert(`Upload triggered for folder ${folderIndex}. Check the Actions tab in a minute to see progress.`);
+  } catch (e) {
+    alert("Error: " + e.message);
+  }
+}
+
+function buildConfigJson() {
+  const tags = document.getElementById("tags").value.split(",").map(t => t.trim()).filter(Boolean);
+  const schedule = [];
+  for (let i = 0; i < 7; i++) {
+    const val = document.getElementById(`sched_${i}`).value || "08:00";
+    schedule.push({ folder_index: i, time_24h: val });
+  }
+  const config = {
+    drive_parent_folder_id: currentData.drive_parent_folder_id || "",
+    channel_holder_name: currentData.channel_holder_name || "KrixCrime",
+    watermark: {
+      circle_logo: "assets/logo_circle.png",
+      circle_position: document.getElementById("circle_position").value,
+      circle_width: parseInt(document.getElementById("circle_width").value, 10),
+      circle_margin: parseInt(document.getElementById("circle_margin").value, 10),
+      rect_logo: "assets/logo_rect.png",
+      rect_position: document.getElementById("rect_position").value,
+      rect_width: parseInt(document.getElementById("rect_width").value, 10),
+      rect_margin: parseInt(document.getElementById("rect_margin").value, 10),
+      rect_enabled: document.getElementById("rect_enabled").value === "true"
+    },
+    outro_video: "assets/outro.mp4",
+    title_template: document.getElementById("title_template").value,
+    description_template: document.getElementById("description_template").value,
+    tags: tags,
+    upload_schedule: schedule
+  };
+  return { text: JSON.stringify(config, null, 2), schedule };
+}
+
+function buildWorkflowYml(schedule) {
+  const crons = schedule.map(s => istToUtcCron(s.time_24h));
+  return `name: YouTube Auto Uploader
+
+on:
+  schedule:
+    - cron: "${crons[0]}"
+    - cron: "${crons[1]}"
+    - cron: "${crons[2]}"
+    - cron: "${crons[3]}"
+    - cron: "${crons[4]}"
+    - cron: "${crons[5]}"
+    - cron: "${crons[6]}"
+  workflow_dispatch:
+    inputs:
+      folder_index:
+        description: "Folder index to process (0-6). Leave blank for auto."
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Determine folder index
+        id: folder
+        run: |
+          python scripts/get_folder_index.py "\${{ github.event.schedule }}" "\${{ github.event.inputs.folder_index }}" >> "$GITHUB_OUTPUT"
+
+      - name: Run uploader
+        env:
+          GOOGLE_CLIENT_ID: \${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: \${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: \${{ secrets.GOOGLE_REFRESH_TOKEN }}
+        run: |
+          python main.py --folder-index \${{ steps.folder.outputs.folder_index }}
+
+      - name: Commit updated tracking + dashboard data
+        run: |
+          git config user.name "krixcrime-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/tracking.json docs/data.json
+          git diff --quiet --cached || git commit -m "Update tracking after upload run"
+          git push
+`;
+}
+
+function buildFolderIndexPy(schedule) {
+  const crons = schedule.map(s => istToUtcCron(s.time_24h));
+  const entries = crons.map((c, i) => `    "${c}": ${i},`).join("\n");
+  return `"""Maps the cron schedule string that triggered the workflow to a folder index.
+Auto-generated by the dashboard Control Panel — do not edit by hand, it will be
+overwritten next time settings are saved from the dashboard."""
+
+import sys
+
+CRON_MAP = {
+${entries}
+}
+
+
+def main():
+    schedule = sys.argv[1] if len(sys.argv) > 1 else ""
+    manual = sys.argv[2] if len(sys.argv) > 2 else ""
+
+    if manual.strip() != "":
+        idx = int(manual.strip())
+    elif schedule in CRON_MAP:
+        idx = CRON_MAP[schedule]
+    else:
+        idx = 0
+
+    print(f"folder_index={idx}")
+
+
+if __name__ == "__main__":
+    main()
+`;
+}
+
+async function saveSettings() {
+  if (!checkPin()) return;
+  try {
+    const { text: configText, schedule } = buildConfigJson();
+    const workflowText = buildWorkflowYml(schedule);
+    const folderIndexPyText = buildFolderIndexPy(schedule);
+
+    await ghPutFile("config.json", configText, "Update settings via dashboard");
+    await ghPutFile(".github/workflows/upload.yml", workflowText, "Update schedule via dashboard");
+    await ghPutFile("scripts/get_folder_index.py", folderIndexPyText, "Sync folder index map via dashboard");
+
+    alert("Saved! New watermark/schedule settings are live from the next run.");
+  } catch (e) {
+    alert("Error saving settings: " + e.message);
+  }
+}
+
+function renderScheduleEditor(schedule) {
+  const container = document.getElementById("schedule-editor");
+  container.innerHTML = "";
+  schedule.forEach((s, i) => {
+    const row = document.createElement("div");
+    row.className = "schedule-row";
+    row.innerHTML = `
+      <div class="folder-label">Folder ${i}</div>
+      <input type="time" id="sched_${i}" value="${s.time_24h}">
+    `;
+    container.appendChild(row);
+  });
+}
+
 async function loadDashboard() {
   let data;
   try {
@@ -168,6 +490,7 @@ async function loadDashboard() {
     document.querySelector('main').innerHTML = '<div class="empty">No data yet. Run the workflow at least once.</div>';
     return;
   }
+  currentData = data;
 
   const ch = data.channel || {};
   document.getElementById('channel-logo').src = ch.logo || '';
@@ -177,11 +500,10 @@ async function loadDashboard() {
   document.getElementById('stat-total').textContent = ch.total_videos ?? '—';
   document.getElementById('stat-tool').textContent = data.total_uploaded_by_tool ?? 0;
 
-  // Folders
+  // Folders (with Upload Now buttons)
   const foldersGrid = document.getElementById('folders-grid');
   foldersGrid.innerHTML = '';
   (data.folders || []).forEach(f => {
-    const pct = f.next_position ? Math.min(100, Math.round((f.uploaded_count / (f.uploaded_count + 1)) * 0)) : 0;
     const div = document.createElement('div');
     div.className = 'card';
     div.innerHTML = `
@@ -189,9 +511,18 @@ async function loadDashboard() {
       <div class="value">${f.folder_name}</div>
       <div style="margin-top:8px;">${f.completed ? '<span class="badge done">COMPLETED</span>' : '<span class="badge active">IN PROGRESS</span>'}</div>
       <div style="margin-top:8px; font-size:12px; color:var(--muted);">${f.uploaded_count} uploaded</div>
+      <button class="small" onclick="uploadNow(${f.folder_index})">Upload Now</button>
     `;
     foldersGrid.appendChild(div);
   });
+  if (!(data.folders || []).length) {
+    foldersGrid.innerHTML = `
+      <div class="card">
+        <div class="title">Folder 0-6</div>
+        <div class="value">Not discovered yet</div>
+        <button class="small" onclick="uploadNow(0)">Trigger First Run</button>
+      </div>`;
+  }
 
   // Daily report
   const dailyBody = document.querySelector('#daily-table tbody');
@@ -202,24 +533,6 @@ async function loadDashboard() {
     const tr = document.createElement('tr');
     tr.innerHTML = `<td>${d.date}</td><td class="status-success">${d.success}</td><td class="status-failed">${d.failed}</td>`;
     dailyBody.appendChild(tr);
-  });
-
-  // Watermark config
-  const wm = data.watermark_config || {};
-  const wmGrid = document.getElementById('watermark-grid');
-  wmGrid.innerHTML = `
-    <div class="card"><div class="title">Circle Logo</div><div class="value">${wm.circle_position || '—'}, width ${wm.circle_width || '—'}px, margin ${wm.circle_margin || '—'}px</div></div>
-    <div class="card"><div class="title">Rect Logo</div><div class="value">${wm.rect_enabled ? (wm.rect_position + ', width ' + wm.rect_width + 'px') : 'Disabled'}</div></div>
-    <div class="card"><div class="title">Outro Clip</div><div class="value">Appended to every upload (2s)</div></div>
-  `;
-
-  // Schedule
-  const schedBody = document.getElementById('schedule-body');
-  schedBody.innerHTML = '';
-  (data.upload_schedule || []).forEach(s => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${s.folder_index}</td><td>${s.time_ist}</td>`;
-    schedBody.appendChild(tr);
   });
 
   // History
@@ -236,6 +549,26 @@ async function loadDashboard() {
     tr.innerHTML = `<td>${h.date}</td><td>${h.folder_index}</td><td>${h.video_name}</td><td class="${statusClass}">${h.status}</td><td>${linkOrError}</td>`;
     histBody.appendChild(tr);
   });
+
+  // Settings form prefill
+  const wm = data.watermark_config || {};
+  document.getElementById('circle_position').value = wm.circle_position || 'top_left';
+  document.getElementById('circle_width').value = wm.circle_width || 150;
+  document.getElementById('circle_margin').value = wm.circle_margin || 20;
+  document.getElementById('rect_enabled').value = String(!!wm.rect_enabled);
+  document.getElementById('rect_position').value = wm.rect_position || 'bottom_right';
+  document.getElementById('rect_width').value = wm.rect_width || 130;
+  document.getElementById('rect_margin').value = wm.rect_margin || 20;
+
+  document.getElementById('title_template').value = data.title_template || 'Anime Edit #{num} | KrixCrime';
+  document.getElementById('description_template').value = data.description_template || '';
+  document.getElementById('tags').value = (data.tags || []).join(', ');
+
+  const schedule = (data.upload_schedule || []).map((s, i) => ({
+    folder_index: i, time_24h: s.time_24h || "08:00"
+  }));
+  while (schedule.length < 7) schedule.push({ folder_index: schedule.length, time_24h: "08:00" });
+  renderScheduleEditor(schedule);
 }
 
 loadDashboard();
