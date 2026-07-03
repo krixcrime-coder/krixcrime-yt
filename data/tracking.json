@@ -4,8 +4,8 @@
     "0": {
       "folder_id": "150us9sQrjrB8Fbpnc1yHzzn-OQY-BRRP",
       "folder_name": "ERideBay (1-500)",
-      "next_position": 3,
-      "uploaded_count": 3,
+      "next_position": 4,
+      "uploaded_count": 4,
       "completed": false
     },
     "1": {
@@ -74,6 +74,14 @@
       "video_name": "ERideBay (3).mp4",
       "status": "success",
       "youtube_link": "https://youtube.com/watch?v=PvOpFMteNhg",
+      "error": null
+    },
+    {
+      "date": "2026-07-03T08:34:54.860038+00:00",
+      "folder_index": 0,
+      "video_name": "ERideBay (4).mp4",
+      "status": "success",
+      "youtube_link": "https://youtube.com/watch?v=vrzQT1bKIsU",
       "error": null
     }
   ]
