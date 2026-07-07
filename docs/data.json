@@ -64,7 +64,7 @@
     {
       "date": "2026-07-07",
       "success": 0,
-      "failed": 3,
+      "failed": 4,
       "errors": [
         {
           "video": "ERideBay (5).mp4",
@@ -76,6 +76,10 @@
         },
         {
           "video": "ERideBay (1003).mp4",
+          "error": "Command '['ffmpeg', '-y', '-i', 'tmp_work/watermarked.mp4', '-i', 'tmp_work/outro_with_audio.mp4', '-filter_complex', '[0:v:0][0:a:0][1:v:0][1:a:0]concat=n=2:v=1:a=1[outv][outa]', '-map', '[outv]', '-map', '[outa]', 'tmp_work/final.mp4']' returned non-zero exit status 234."
+        },
+        {
+          "video": "ERideBay (1505).mp4",
           "error": "Command '['ffmpeg', '-y', '-i', 'tmp_work/watermarked.mp4', '-i', 'tmp_work/outro_with_audio.mp4', '-filter_complex', '[0:v:0][0:a:0][1:v:0][1:a:0]concat=n=2:v=1:a=1[outv][outa]', '-map', '[outv]', '-map', '[outa]', 'tmp_work/final.mp4']' returned non-zero exit status 234."
         }
       ]
@@ -188,6 +192,14 @@
     }
   ],
   "history_recent": [
+    {
+      "date": "2026-07-07T17:35:50.015471+00:00",
+      "folder_index": 3,
+      "video_name": "ERideBay (1505).mp4",
+      "status": "failed",
+      "youtube_link": null,
+      "error": "Command '['ffmpeg', '-y', '-i', 'tmp_work/watermarked.mp4', '-i', 'tmp_work/outro_with_audio.mp4', '-filter_complex', '[0:v:0][0:a:0][1:v:0][1:a:0]concat=n=2:v=1:a=1[outv][outa]', '-map', '[outv]', '-map', '[outa]', 'tmp_work/final.mp4']' returned non-zero exit status 234."
+    },
     {
       "date": "2026-07-07T16:43:17.711758+00:00",
       "folder_index": 2,
