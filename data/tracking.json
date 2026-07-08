@@ -403,6 +403,14 @@
       "status": "failed",
       "youtube_link": null,
       "error": "Command '['ffmpeg', '-y', '-i', 'tmp_work/watermarked.mp4', '-i', 'tmp_work/outro_with_audio.mp4', '-filter_complex', '[0:v:0][0:a:0][1:v:0][1:a:0]concat=n=2:v=1:a=1[outv][outa]', '-map', '[outv]', '-map', '[outa]', 'tmp_work/final.mp4']' returned non-zero exit status 234."
+    },
+    {
+      "date": "2026-07-08T18:04:52.577040+00:00",
+      "folder_index": 4,
+      "video_name": "ERideBay (2002).mp4",
+      "status": "failed",
+      "youtube_link": null,
+      "error": "Command '['ffmpeg', '-y', '-i', 'tmp_work/watermarked.mp4', '-i', 'tmp_work/outro_with_audio.mp4', '-filter_complex', '[0:v:0][0:a:0][1:v:0][1:a:0]concat=n=2:v=1:a=1[outv][outa]', '-map', '[outv]', '-map', '[outa]', 'tmp_work/final.mp4']' returned non-zero exit status 234."
     }
   ]
 }
